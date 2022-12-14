@@ -1,6 +1,10 @@
 import csv
-import itertools
+from itertools import combinations
 from tqdm import tqdm
+costs = []
+action = [("Action1", 20),("Action2", 30),("Action3", 40),("Action4", 50)]
+
+
 class Action:
     def __init__(self, name, price, percentage_benefit):
         self.name = name
@@ -17,11 +21,13 @@ class ActionCombination:
         
     def get_all_combinations(self):
         best_combos = [] 
+        combos = combinations(self.actions, 2)
 
     def calc_profits(self, combos):
         profits = []
         for combo in combos:
-            profits.append(combo[2])
+            ben = combo[1] * combo[2] / 100
+            profits.append(ben)
         return sum(profits)
 
     def calc_costs(self, combos):
