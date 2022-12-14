@@ -1,10 +1,6 @@
 import csv
 from itertools import combinations
-from tqdm import tqdm
-costs = []
-action = [("Action1", 20),("Action2", 30),("Action3", 40),("Action4", 50)]
-
-
+from colorama import Fore, Back, Style
 class Action:
     def __init__(self, name, price, percentage_benefit):
         self.name = name
@@ -20,8 +16,17 @@ class ActionCombination:
         self.max_invest = max_invest
         
     def get_all_combinations(self):
-        best_combos = [] 
-        combos = combinations(self.actions, 2)
+        best_combos = []
+        profit = 0
+        costs = 0
+        for i in range(len(self.actions)):
+            combos = combinations(self.actions, i+1)
+            for combo in combos:
+                if self.calc_costs(combo) <= self.max_invest:
+                    costs = self.calc_costs(combo)
+                    profit = self.calc_profits(combo)
+                    best_combos = combo
+        return [best_combos, profit, costs]
 
     def calc_profits(self, combos):
         profits = []
@@ -35,6 +40,11 @@ class ActionCombination:
         for combo in combos:
             costs.append(combo[1])
         return sum(costs)
+    
+    def results_actions(self):
+        results_actions = self.get_all_combinations()[0]
+        for result in results_actions:
+            print('\033[93m',result, '\033[0m')
 #    def get_all_combinations(self, number_action=2, all_combinations=[]):
 #         all_combinations.append(list(itertools.combinations(self.actions, number_action)))
 #         return self.get_all_combinations(number_action - 1, all_combinations)
@@ -46,15 +56,17 @@ def get_data():
         list_actions = []
         for row in dataReader:
             action = Action(row[0], float(row[1]), float(row[2]))
+            print('\033[91m', action, '\033[0m')
             list_actions.append((action.name, action.price, action.percentage_benefit))
         return list_actions
 
-
 def main():
     result_data = get_data()
-    print(f'Il y a {len(result_data)} actions')
     combination = ActionCombination(result_data)
-    combination.get_all_combinations()
-    
+    print('\033[92m'f'Il y a {len(result_data)} actions dans la base de donnée')
+    print(f"Le bénéfice total est de {combination.get_all_combinations()[1]}%")
+    print(f"Le coût total est de {combination.get_all_combinations()[2]}€")
+    print("Les actions les plus rentables: "'\033[0m')
+    combination.results_actions()
 if __name__ == "__main__":
     main()
