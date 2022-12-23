@@ -1,6 +1,5 @@
 import csv
 from itertools import combinations
-from colorama import Fore, Back, Style
 class Action:
     def __init__(self, name, price, percentage_benefit):
         self.name = name
@@ -45,10 +44,6 @@ class ActionCombination:
         results_actions = self.get_all_combinations()[0]
         for result in results_actions:
             print('\033[93m',result, '\033[0m')
-#    def get_all_combinations(self, number_action=2, all_combinations=[]):
-#         all_combinations.append(list(itertools.combinations(self.actions, number_action)))
-#         return self.get_all_combinations(number_action - 1, all_combinations)
-
 
 def get_data():
     with open("data/dataTest.csv", newline='') as csvFile:
