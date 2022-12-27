@@ -1,5 +1,6 @@
 import csv
 from itertools import combinations
+import time
 class Action:
     def __init__(self, name, price, percentage_benefit):
         self.name = name
@@ -63,5 +64,10 @@ def main():
     print(f"Le coût total est de {combination.get_all_combinations()[2]}€")
     print("Les actions les plus rentables: "'\033[0m')
     combination.results_actions()
+
 if __name__ == "__main__":
+    start = time.time()
     main()
+    end = time.time()
+    temps = round(end - start, 3)
+    print(f"Temps exécuté: {temps}secondes")
