@@ -1,4 +1,5 @@
 import csv
+import time
 class Action:
     def __init__(self, name, price, profit):
         self.name = name
@@ -18,13 +19,13 @@ class Action_combination:
         for action in combos:
             ben = action[1] * action[2] / 100
             total_profit.append(ben)
-        return sum(total_profit)
+        return round(sum(total_profit), 2)
 
     def calc_costs(self, combos):
         total_costs = []
         for action in combos:
             total_costs.append(action[1])
-        return sum(total_costs)
+        return round(sum(total_costs), 2)
 
     def past_actions(self, actions):
         numberLine = 0
@@ -46,12 +47,12 @@ class Action_combination:
         best_combos1 = []
         best_combos2 = []
         for action in data1:
-            if total_price1 + action[1] <= self.WALLET and action[1] > 0:
+            if total_price1 + action[1] <= self.WALLET and action[1] > 5:
                 total_price1 += action[1]
                 best_combos1.append(action)
 
         for action in data2:
-            if total_price2 + action[1] <= self.WALLET and action[1] > 0:
+            if total_price2 + action[1] <= self.WALLET and action[1] > 5:
                 total_price2 += action[1]
                 best_combos2.append(action)
 
@@ -60,12 +61,26 @@ class Action_combination:
     def results(self):
         combos1 = self.combos()[0]
         combos2 = self.combos()[1]
-        total_costs1 = round(self.calc_costs(combos1), 2)
-        total_costs2 = round(self.calc_costs(combos2), 2)
-        total_profits1 = round(self.calc_profit(combos1), 2)
-        total_profits2 = round(self.calc_profit(combos2), 2)
-        print(f"Dataset1: prix total: {total_costs1}€, bénéfice total: {total_profits1}%")
-        print(f"Dataset2: prix total: {total_costs2}€, bénéfice total: {total_profits2}%")
+        total_costs1 = self.calc_costs(combos1)
+        total_costs2 = self.calc_costs(combos2)
+        total_profits1 = self.calc_profit(combos1)
+        total_profits2 = self.calc_profit(combos2)
+        if len(combos1) <= 1:
+            print('\033[92m' f"Dataset1: {len(combos1)} élément")
+        else:
+            print('\033[92m' f"Dataset1: {len(combos1)} éléments")
+        for action in combos1:
+            print(action)
+        print('\033[92m' f"prix total: {total_costs1}€, bénéfice total: {total_profits1}%" '\033[0m')
+
+        if len(combos2) <= 1:
+            print('\033[93m' f"Dataset2: {len(combos2)} élément")
+        else:
+            print('\033[93m' f"Dataset2: {len(combos2)} éléments")
+        for action in combos2:
+            print(action)
+        print('\033[93m' f"prix total: {total_costs2}€, bénéfice total: {total_profits2}%" '\033[0m')
+        
        
 
 
@@ -80,7 +95,11 @@ def get_data():
     return list_actions
 
 if __name__ == "__main__":
+    start = time.time()
     result_data = get_data()
     action = Action_combination(result_data)
     action.results()
+    end = time.time()
+    temps = round(end - start, 3)
+    print(f"Temps exécuté: {temps}secondes")
     
