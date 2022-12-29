@@ -70,4 +70,4 @@ if __name__ == "__main__":
     main()
     end = time.time()
     temps = round(end - start, 3)
-    print(f"Temps exécuté: {temps}secondes")
+    print(f"Temps exécuté: {temps} secondes")
