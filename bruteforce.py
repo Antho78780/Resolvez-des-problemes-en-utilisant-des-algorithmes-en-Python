@@ -1,6 +1,7 @@
 import csv
 from itertools import combinations
 import time
+
 class Action:
     def __init__(self, name, price, percentage_benefit):
         self.name = name

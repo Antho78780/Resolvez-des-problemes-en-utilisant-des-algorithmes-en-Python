@@ -90,8 +90,7 @@ if __name__ == "__main__":
     result_data = get_data()
     action = Action_combination(result_data)
     action.results()
-    # action.results()
-    # end = time.time()
-    # temps = round(end - start, 3)
-    # print(f"Temps exécuté: {temps} secondes")
+    end = time.time()
+    temps = round(end - start, 3)
+    print(f"Temps exécuté: {temps} secondes")
     
