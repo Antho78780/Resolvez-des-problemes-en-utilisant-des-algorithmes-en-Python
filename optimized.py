@@ -1,5 +1,6 @@
 import csv
 import time
+import tracemalloc
 class Action:
     def __init__(self, name, price, profit):
         self.name = name
@@ -51,29 +52,21 @@ class Action_combination:
         total_profits = self.calc_profit(best_combos)
         return best_combos, total_costs, total_profits
 
+    def print_dataset(self, dataset, cost, profit, chr):
+        if len(dataset) <= 1:
+                print('\033[92m' f"{chr}: {len(dataset)} élément")
+        else:
+            print('\033[92m' f"{chr}: {len(dataset)} éléments")
+        for action in dataset:
+                print(action)
+        print('\033[92m' f"prix total: {cost}€, bénéfice total: {profit}%" '\033[0m')
+
 
     def results(self):
         dataset1 = self.combos(self.past_actions(self.list_actions)[0])
         dataset2 = self.combos(self.past_actions(self.list_actions)[1])
-    
-        if len(dataset1[0]) <= 1:
-            print('\033[92m' f"Dataset1: {len(dataset1[0])} élément")
-        else:
-            print('\033[92m' f"Dataset1: {len(dataset1[0])} éléments")
-        for action in dataset1[0]:
-            print(action)
-        print('\033[92m' f"prix total: {dataset1[1]}€, bénéfice total: {dataset1[2]}%" '\033[0m')
-
-
-        if len(dataset2[0]) <= 1:
-            print('\033[93m' f"Dataset2: {len(dataset2[0])} élément")
-        else:
-            print('\033[93m' f"Dataset2: {len(dataset2[0])} éléments")
-        for action in dataset2[0]:
-            print(action)
-        print('\033[93m' f"prix total: {dataset2[1]}€, bénéfice total: {dataset2[2]}%" '\033[0m')
-        
-       
+        self.print_dataset(dataset1[0], dataset1[1], dataset1[2], "Dataset1")
+        self.print_dataset(dataset2[0], dataset2[1], dataset2[2], "Dataset2")
 
 def get_data():
     list_actions = []
@@ -85,12 +78,14 @@ def get_data():
                 list_actions.append((action.name, action.price, action.profit))
     return list_actions
 
-if __name__ == "__main__":
-    start = time.time()
+def main():
     result_data = get_data()
     action = Action_combination(result_data)
     action.results()
+    
+if __name__ == "__main__":
+    start = time.time()
+    main()
     end = time.time()
     temps = round(end - start, 3)
     print(f"Temps exécuté: {temps} secondes")
-    

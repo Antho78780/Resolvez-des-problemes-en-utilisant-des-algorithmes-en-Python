@@ -1,6 +1,7 @@
 import csv
 from itertools import combinations
 import time
+import tracemalloc
 
 class Action:
     def __init__(self, name, price, percentage_benefit):
@@ -27,6 +28,7 @@ class ActionCombination:
                     costs = self.calc_costs(combo)
                     profit = self.calc_profits(combo)
                     best_combos = combo
+
         return [best_combos, profit, costs]
 
     def calc_profits(self, combos):
@@ -60,6 +62,7 @@ def get_data():
 def main():
     result_data = get_data()
     combination = ActionCombination(result_data)
+    combination.get_all_combinations()
     print('\033[92m'f'Il y a {len(result_data)} actions dans la base de donnée')
     print(f"Le bénéfice total est de {combination.get_all_combinations()[1]}%")
     print(f"Le coût total est de {combination.get_all_combinations()[2]}€")
